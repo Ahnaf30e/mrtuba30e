@@ -1,0 +1,2769 @@
+{
+  "author": "",
+  "category": "Advanced",
+  "extensionNamespace": "",
+  "fullName": "Better Inventory",
+  "helpPath": "",
+  "iconUrl": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0ibWRpLWJhZy1wZXJzb25hbCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGQ9Ik0xNiw1VjRBMiwyIDAgMCwwIDE0LDJIMTBBMiwyIDAgMCwwIDgsNFY1QTQsNCAwIDAsMCA0LDlWMjBBMiwyIDAgMCwwIDYsMjJIMThBMiwyIDAgMCwwIDIwLDIwVjlBNCw0IDAgMCwwIDE2LDVNMTAsNEgxNFY1SDEwVjRNMTIsOUwxNCwxMUwxMiwxM0wxMCwxMUwxMiw5TTE4LDE2SDlWMThIOFYxNkg2VjE1SDE4VjE2WiIgLz48L3N2Zz4=",
+  "name": "BetterInventory",
+  "previewIconUrl": "https://resources.gdevelop-app.com/assets/Icons/bag-personal.svg",
+  "shortDescription": "Add inventory functionality to their games.",
+  "version": "1.0.0",
+  "description": "This extension provides a way for developers to add inventory functionality to their games. This includea features such as the ability to add and remove items from the inventory, check for the presence or absence of items in the inventory, etc. This also allows for the use of inventory slots, allowing for more complex inventory management",
+  "tags": [
+    "inventory",
+    "slot",
+    "bag"
+  ],
+  "authorIds": [
+    "onPsboRtDkUHNOsx7OPr8R8G1oj2"
+  ],
+  "dependencies": [],
+  "eventsFunctions": [
+    {
+      "description": "Create a bag to store items in",
+      "fullName": "Create a bag",
+      "functionType": "Action",
+      "name": "CreateBag",
+      "sentence": "Create a bag called _PARAM1_ to store items in with _PARAM2_ slots.",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "value": "BuiltinCommonInstructions::CompareNumbers"
+              },
+              "parameters": [
+                "GetArgumentAsNumber(\"maxSlot\")",
+                ">",
+                "0"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "value": "ModVarGlobal"
+              },
+              "parameters": [
+                "__BetterInventory.Bags[GetArgumentAsString(\"name\")].max",
+                "=",
+                "GetArgumentAsNumber(\"maxSlot\")"
+              ]
+            }
+          ],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::JsCode",
+              "inlineCode": [
+                "let bags = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Bags;",
+                "const bagName = eventsFunctionContext.getArgument(\"name\")",
+                "const maxSlot = eventsFunctionContext.getArgument(\"maxSlot\")",
+                "",
+                "bags[bagName].slots = Array(maxSlot).fill({name:\"0\", quantity:0});",
+                "",
+                "runtimeScene.getGame().getVariables().get(\"__BetterInventory\").getChild(\"Bags\").fromJSObject(bags);"
+              ],
+              "parameterObjects": "",
+              "useStrict": true,
+              "eventsSheetExpanded": false
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Name of the bag",
+          "name": "name",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Max number of slots",
+          "name": "maxSlot",
+          "type": "expression"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Change a bag's max amount of slots",
+      "fullName": "Change a bag's size",
+      "functionType": "Action",
+      "name": "ChangeBagSize",
+      "sentence": "Change the max amount of slots of bag _PARAM1_ to _PARAM2_",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::JsCode",
+          "inlineCode": [
+            "let bags = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Bags;",
+            "const bagName = eventsFunctionContext.getArgument(\"bag\");",
+            "const maxSlot = eventsFunctionContext.getArgument(\"maxSlot\");",
+            "",
+            "const lastMaxSlot = bags[bagName].max;",
+            "",
+            "bags[bagName].slots.length = maxSlot;",
+            "bags[bagName].max = maxSlot;",
+            "bags[bagName].slots = bags[bagName].slots.fill({name:\"0\", quantity:0}, lastMaxSlot);",
+            "",
+            "runtimeScene.getGame().getVariables().get(\"__BetterInventory\").getChild(\"Bags\").fromJSObject(bags);"
+          ],
+          "parameterObjects": "",
+          "useStrict": true,
+          "eventsSheetExpanded": false
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Max number of slots",
+          "name": "maxSlot",
+          "type": "expression"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Empty all slots in a bag",
+      "fullName": "Empty a bag",
+      "functionType": "Action",
+      "name": "EmptyBag",
+      "sentence": "Empty all slots of the bag _PARAM1_",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::JsCode",
+          "inlineCode": [
+            "let bags = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Bags;",
+            "const bagName = eventsFunctionContext.getArgument(\"bag\");",
+            "",
+            "bags[bagName].slots = Array(bags[bagName].max).fill({name:\"0\", quantity:0});",
+            "",
+            "runtimeScene.getGame().getVariables().get(\"__BetterInventory\").getChild(\"Bags\").fromJSObject(bags);"
+          ],
+          "parameterObjects": "",
+          "useStrict": true,
+          "eventsSheetExpanded": false
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Create item that can be used for items :)",
+      "fullName": "Create an item",
+      "functionType": "Action",
+      "name": "CreateItem",
+      "sentence": "Create an item _PARAM1_ with the max slot item quantity of _PARAM2_.",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "value": "ModVarGlobal"
+              },
+              "parameters": [
+                "__BetterInventory.Items[GetArgumentAsString(\"name\")].max",
+                "=",
+                "GetArgumentAsNumber(\"maxItem\")"
+              ]
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Name of the item (Must not be \"\" or \"0\" as they are considered as empty)",
+          "name": "name",
+          "supplementaryInformation": "sceneitem",
+          "type": "identifier"
+        },
+        {
+          "description": "Max number of items in one slot",
+          "name": "maxItem",
+          "type": "expression"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Replace two slots in two bags",
+      "fullName": "Replace two slots",
+      "functionType": "Action",
+      "name": "ReplaceSlots",
+      "sentence": "Replace slot _PARAM2_ of bag _PARAM1_ with slot _PARAM4_ of bag _PARAM3_. (Try adding: _PARAM5_)",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "value": "Egal"
+              },
+              "parameters": [
+                "GetArgumentAsNumber(\"slot1\")",
+                ">=",
+                "0"
+              ]
+            },
+            {
+              "type": {
+                "value": "Egal"
+              },
+              "parameters": [
+                "GetArgumentAsNumber(\"slot2\")",
+                ">=",
+                "0"
+              ]
+            },
+            {
+              "type": {
+                "value": "Egal"
+              },
+              "parameters": [
+                "GetArgumentAsNumber(\"slot1\")",
+                "!=",
+                "GetArgumentAsNumber(\"slot2\")"
+              ]
+            }
+          ],
+          "actions": [],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::JsCode",
+              "inlineCode": [
+                "function replaceSlot(runtimeScene, bags, items, bag1, slot1, bag2, slot2, tryAdding) {",
+                "    // If no bag with the given name exists, log an error message and return.",
+                "    if (!bags[bag1] || !bags[bag2]) {",
+                "        console.error(\"No such bag exists\");",
+                "        return;",
+                "    }",
+                "    // If tryAdding is true and the slots have the same item, try adding the item in slot1 to slot2",
+                "    if (tryAdding && bags[bag1].slots[slot1].name == bags[bag2].slots[slot2].name) {",
+                "        // Get the values of the slots",
+                "        const slot1Values = bags[bag1].slots[slot1];",
+                "        const slot2Values = bags[bag2].slots[slot2];",
+                "        // Check if there is enough space in slot2 to add the items in slot1",
+                "        if (items[slot2Values.name].max - slot2Values.quantity >= slot1Values.quantity) {",
+                "            // If there is, add the items and set the quantity in slot1 to 0",
+                "            slot2Values.quantity += slot1Values.quantity;",
+                "            slot1Values.quantity = 0;",
+                "        }",
+                "        else {",
+                "            // If there isn't enough space, add as many items as possible and set the remaining items in slot1",
+                "            slot1Values.quantity -= items[slot2Values.name].max - slot2Values.quantity;",
+                "            slot2Values.quantity = items[slot2Values.name].max;",
+                "        }",
+                "    }",
+                "    else {",
+                "        // If tryAdding is false or the slots have different items, swap the items in the slots",
+                "        const tempSlot = bags[bag1].slots[slot1];",
+                "        bags[bag1].slots[slot1] = bags[bag2].slots[slot2];",
+                "        bags[bag2].slots[slot2] = tempSlot;",
+                "    }",
+                "    // Update the bags in the game's variables",
+                "    runtimeScene.getGame().getVariables().get(\"__BetterInventory\").getChild(\"Bags\").fromJSObject(bags);",
+                "}",
+                "",
+                "// Get the bags and items from the game's variables",
+                "let bags = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Bags;",
+                "let items = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Items;",
+                "const bag1 = eventsFunctionContext.getArgument(\"bag1\");",
+                "const bag2 = eventsFunctionContext.getArgument(\"bag2\");",
+                "const slot1 = eventsFunctionContext.getArgument(\"slot1\");",
+                "const slot2 = eventsFunctionContext.getArgument(\"slot2\");",
+                "const tryAdding = eventsFunctionContext.getArgument(\"add\");",
+                "",
+                "replaceSlot(runtimeScene, bags, items, bag1, slot1, bag2, slot2, tryAdding);",
+                ""
+              ],
+              "parameterObjects": "",
+              "useStrict": true,
+              "eventsSheetExpanded": true
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Name of the first bag",
+          "name": "bag1",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Slot of the first bag",
+          "name": "slot1",
+          "type": "expression"
+        },
+        {
+          "description": "Name of the second bag",
+          "name": "bag2",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Slot of the second bag",
+          "name": "slot2",
+          "type": "expression"
+        },
+        {
+          "defaultValue": "yes",
+          "description": "Try adding the first slot to the second slot if it can be done",
+          "name": "add",
+          "optional": true,
+          "type": "yesorno"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Get the item quantity of a slot in a bag",
+      "fullName": "Item quantity in a bag",
+      "functionType": "Expression",
+      "name": "ItemQuantityInBag",
+      "sentence": "Checki if _PARAM3_ _PARAM1_ items can fit in bag _PARAM2_ in slot _PARAM4_.",
+      "events": [
+        {
+          "colorB": 228,
+          "colorG": 176,
+          "colorR": 74,
+          "creationTime": 0,
+          "name": "Number of items in a slot of the bag",
+          "source": "",
+          "type": "BuiltinCommonInstructions::Group",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "!=",
+                    "-1"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "<=",
+                    "GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].max)"
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "value": "ModVarScene"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Temp.itemNum",
+                    "=",
+                    "0"
+                  ]
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "StrEqual"
+                      },
+                      "parameters": [
+                        "GetArgumentAsString(\"item\")",
+                        "=",
+                        "GlobalVariableString(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name)"
+                      ]
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "ModVarScene"
+                      },
+                      "parameters": [
+                        "__BetterInventory.Temp.itemNum",
+                        "+",
+                        "GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity)"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "SetReturnNumber"
+                      },
+                      "parameters": [
+                        "Variable(__BetterInventory.Temp.itemNum)"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "colorB": 228,
+          "colorG": 176,
+          "colorR": 74,
+          "creationTime": 0,
+          "name": "Number of items in the bag",
+          "source": "",
+          "type": "BuiltinCommonInstructions::Group",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "<=",
+                    "-1"
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "value": "ModVarScene"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Temp.itemNum",
+                    "=",
+                    "GetArgumentAsNumber(\"quantity\")"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "ModVarScene"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Temp.slotNum",
+                    "=",
+                    "0"
+                  ]
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::JsCode",
+                  "inlineCode": [
+                    "function itemQuantityInBag(bags, items, bagName, item) {\r",
+                    "    // Initialize some variables we'll use later in the function\r",
+                    "    let foundSlot;\r",
+                    "    let foundSlotIndex;\r",
+                    "    let quantity = 0;\r",
+                    "    let done;\r",
+                    "\r",
+                    "     //Loop until the loop is explicitly broken by setting `done` to `true`\r",
+                    "    while (!done) {\r",
+                    "        // If no bag with the given name exists, log an error message and return.\r",
+                    "        if (!bags[bagName]) {\r",
+                    "            console.error(\"No such bag exists\");\r",
+                    "            break\r",
+                    "        }\r",
+                    "        // Make a copy of the bag's slots array and ensure that it has the correct length\r",
+                    "        const slots = [...bags[bagName].slots];\r",
+                    "        slots.length = bags[bagName].max\r",
+                    "\r",
+                    "        // Find the first slot containing the given item and its index in the slots array.\r",
+                    "        foundSlotIndex = slots.indexOf(slots.find(i => i.quantity > 0 && i.name === item));\r",
+                    "        foundSlot = bags[bagName].slots[foundSlotIndex];\r",
+                    "\r",
+                    "        // If the item was found in a slot, add its quantity to the total and set its quantity to 0.\r",
+                    "        if (foundSlotIndex >= 0) {\r",
+                    "            quantity += foundSlot.quantity;\r",
+                    "            foundSlot.quantity = 0;\r",
+                    "        }\r",
+                    "        // If no suitable slot was found, return the quantity and exit the loop by setting `done` to `true`\r",
+                    "        else {\r",
+                    "            done = true;\r",
+                    "            return quantity;\r",
+                    "        }\r",
+                    "    }\r",
+                    "}\r",
+                    "\r",
+                    "// Get the bags and items objects from the game's variables.\r",
+                    "let bags = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Bags;\r",
+                    "const bagName = eventsFunctionContext.getArgument(\"bag\")\r",
+                    "const item = eventsFunctionContext.getArgument(\"item\");\r",
+                    "let items = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Items;\r",
+                    "\r",
+                    "eventsFunctionContext.returnValue = itemQuantityInBag(bags, items, bagName, item);\r",
+                    ""
+                  ],
+                  "parameterObjects": "",
+                  "useStrict": true,
+                  "eventsSheetExpanded": true
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        }
+      ],
+      "expressionType": {
+        "type": "expression"
+      },
+      "parameters": [
+        {
+          "description": "Name of the item",
+          "name": "item",
+          "supplementaryInformation": "sceneitem",
+          "type": "identifier"
+        },
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Slot (-1 for auto)",
+          "name": "slot",
+          "type": "expression"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Split items from one slot in one bag to another slot in another bags",
+      "fullName": "Move half of the items",
+      "functionType": "Action",
+      "name": "MoveHalfInSlots",
+      "sentence": "Replace slot _PARAM2_ of bag _PARAM1_ with slot _PARAM4_ of bag _PARAM3_. (Try adding: _PARAM5_)",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "value": "Egal"
+              },
+              "parameters": [
+                "GetArgumentAsNumber(\"slot1\")",
+                ">=",
+                "0"
+              ]
+            },
+            {
+              "type": {
+                "value": "Egal"
+              },
+              "parameters": [
+                "GetArgumentAsNumber(\"slot2\")",
+                ">=",
+                "0"
+              ]
+            },
+            {
+              "type": {
+                "value": "Egal"
+              },
+              "parameters": [
+                "GetArgumentAsNumber(\"slot1\")",
+                "!=",
+                "GetArgumentAsNumber(\"slot2\")"
+              ]
+            }
+          ],
+          "actions": [],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::JsCode",
+              "inlineCode": [
+                "function replaceSlot(runtimeScene, bags, items, bag1, slot1, bag2, slot2, tryAdding) {",
+                "    // If no bag with the given name exists, log an error message and return.",
+                "    if (!bags[bag1] || !bags[bag2]) {",
+                "        console.error(\"No such bag exists\");",
+                "        return;",
+                "    }",
+                "    // If tryAdding is true and the slots have the same item, try adding the item in slot1 to slot2",
+                "    if (tryAdding && bags[bag1].slots[slot1].name == bags[bag2].slots[slot2].name) {",
+                "        // Get the values of the slots",
+                "        const slot1Values = bags[bag1].slots[slot1];",
+                "        const slot2Values = bags[bag2].slots[slot2];",
+                "        // Check if there is enough space in slot2 to add the items in slot1",
+                "        if (items[slot2Values.name].max - slot2Values.quantity >= slot1Values.quantity) {",
+                "            // If there is, add the items and set the quantity in slot1 to 0",
+                "            slot2Values.quantity += slot1Values.quantity;",
+                "            slot1Values.quantity = 0;",
+                "        }",
+                "        else {",
+                "            // If there isn't enough space, add as many items as possible and set the remaining items in slot1",
+                "            slot1Values.quantity -= items[slot2Values.name].max - slot2Values.quantity;",
+                "            slot2Values.quantity = items[slot2Values.name].max;",
+                "        }",
+                "    }",
+                "    else {",
+                "        // If tryAdding is false or the slots have different items, swap the items in the slots",
+                "        const tempSlot = bags[bag1].slots[slot1];",
+                "        bags[bag1].slots[slot1] = bags[bag2].slots[slot2];",
+                "        bags[bag2].slots[slot2] = tempSlot;",
+                "    }",
+                "    // Update the bags in the game's variables",
+                "    runtimeScene.getGame().getVariables().get(\"__BetterInventory\").getChild(\"Bags\").fromJSObject(bags);",
+                "}",
+                "",
+                "// Get the bags and items from the game's variables",
+                "let bags = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Bags;",
+                "let items = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Items;",
+                "const bag1 = eventsFunctionContext.getArgument(\"bag1\");",
+                "const bag2 = eventsFunctionContext.getArgument(\"bag2\");",
+                "const slot1 = eventsFunctionContext.getArgument(\"slot1\");",
+                "const slot2 = eventsFunctionContext.getArgument(\"slot2\");",
+                "const tryAdding = eventsFunctionContext.getArgument(\"add\");",
+                "",
+                "replaceSlot(runtimeScene, bags, items, bag1, slot1, bag2, slot2, tryAdding);",
+                ""
+              ],
+              "parameterObjects": "",
+              "useStrict": true,
+              "eventsSheetExpanded": true
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Name of the first bag",
+          "name": "bag1",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Slot of the first bag",
+          "name": "slot1",
+          "type": "expression"
+        },
+        {
+          "description": "Name of the second bag",
+          "name": "bag2",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Slot of the second bag",
+          "name": "slot2",
+          "type": "expression"
+        },
+        {
+          "defaultValue": "yes",
+          "description": "Try adding the first slot to the second slot if it can be done",
+          "name": "add",
+          "optional": true,
+          "type": "yesorno"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Get the slot JSON data",
+      "fullName": "Slot JSON data",
+      "functionType": "StringExpression",
+      "name": "SlotJSON",
+      "sentence": "Checki if _PARAM3_ _PARAM1_ items can fit in bag _PARAM2_ in slot _PARAM4_.",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "value": "SetReturnString"
+              },
+              "parameters": [
+                "GlobalVarToJSON(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")])"
+              ]
+            }
+          ]
+        }
+      ],
+      "expressionType": {
+        "type": "string"
+      },
+      "parameters": [
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Slot",
+          "name": "slot",
+          "type": "expression"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Set a slot's data from JSON",
+      "fullName": "Set slot from JSON",
+      "functionType": "Action",
+      "name": "SetSlotFromJSON",
+      "sentence": "Set slot _PARAM2_ of bag _PARAM3_ with JSON _PARAM1_. (Try adding: _PARAM4_)",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "value": "SetSceneVariableAsBoolean"
+              },
+              "parameters": [
+                "__BetterInventory.Temp.add",
+                "True"
+              ]
+            },
+            {
+              "type": {
+                "value": "JSONToVariableStructure"
+              },
+              "parameters": [
+                "GetArgumentAsString(\"JSON\")",
+                "__BetterInventory.Temp.slot1"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "value": "BuiltinCommonInstructions::Or"
+              },
+              "parameters": [],
+              "subInstructions": [
+                {
+                  "type": {
+                    "inverted": true,
+                    "value": "GetArgumentAsBoolean"
+                  },
+                  "parameters": [
+                    "\"add\""
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "BuiltinCommonInstructions::And"
+                  },
+                  "parameters": [],
+                  "subInstructions": [
+                    {
+                      "type": {
+                        "value": "GetArgumentAsBoolean"
+                      },
+                      "parameters": [
+                        "\"add\""
+                      ]
+                    },
+                    {
+                      "type": {
+                        "value": "BuiltinCommonInstructions::Or"
+                      },
+                      "parameters": [],
+                      "subInstructions": [
+                        {
+                          "type": {
+                            "value": "StrEqual"
+                          },
+                          "parameters": [
+                            "GlobalVariableString(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name)",
+                            "!=",
+                            "VariableString(__BetterInventory.Temp.slot1.name)"
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "BetterInventory::IsSlotEmpty"
+                          },
+                          "parameters": [
+                            "",
+                            "GetArgumentAsNumber(\"slot\")",
+                            "GetArgumentAsString(\"bag\")",
+                            ""
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "value": "SetSceneVariableAsBoolean"
+              },
+              "parameters": [
+                "__BetterInventory.Temp.add",
+                "False"
+              ]
+            },
+            {
+              "type": {
+                "value": "ModVarGlobalTxt"
+              },
+              "parameters": [
+                "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name",
+                "=",
+                "VariableString(__BetterInventory.Temp.slot1.name)"
+              ]
+            },
+            {
+              "type": {
+                "value": "ModVarGlobal"
+              },
+              "parameters": [
+                "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                "=",
+                "Variable(__BetterInventory.Temp.slot1.quantity)"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "value": "SceneVariableAsBoolean"
+              },
+              "parameters": [
+                "__BetterInventory.Temp.add",
+                "True"
+              ]
+            }
+          ],
+          "actions": [],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "Variable(__BetterInventory.Temp.slot1.quantity)",
+                    ">=",
+                    "GlobalVariable(__BetterInventory.Items[GlobalVariableString(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name)].max)-GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity)"
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "value": "ModVarGlobal"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                    "=",
+                    "GlobalVariable(__BetterInventory.Items[GlobalVariableString(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name)].max)"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "Variable(__BetterInventory.Temp.slot1.quantity)",
+                    "<",
+                    "GlobalVariable(__BetterInventory.Items[GlobalVariableString(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name)].max)-GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity)"
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "value": "ModVarGlobal"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                    "+",
+                    "Variable(__BetterInventory.Temp.slot1.quantity)"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "description": "JSON data of slot",
+          "name": "JSON",
+          "type": "string"
+        },
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Slot",
+          "name": "slot",
+          "type": "expression"
+        },
+        {
+          "defaultValue": "yes",
+          "description": "Try adding the slot(JSON data) quantity to the slot if it can be done",
+          "name": "add",
+          "optional": true,
+          "type": "yesorno"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Get the bag JSON data",
+      "fullName": "Bag JSON data",
+      "functionType": "StringExpression",
+      "name": "BagJSON",
+      "sentence": "Checki if _PARAM3_ _PARAM1_ items can fit in bag _PARAM2_ in slot _PARAM4_.",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::JsCode",
+          "inlineCode": [
+            "let bags = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Bags;",
+            "const bagName = eventsFunctionContext.getArgument(\"bag\");"
+          ],
+          "parameterObjects": "",
+          "useStrict": true,
+          "eventsSheetExpanded": false
+        }
+      ],
+      "expressionType": {
+        "type": "string"
+      },
+      "parameters": [
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Bag's max amount of slots",
+      "fullName": "Bag size",
+      "functionType": "Expression",
+      "name": "BagSize",
+      "sentence": "Checki if _PARAM3_ _PARAM1_ items can fit in bag _PARAM2_ in slot _PARAM4_.",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "value": "SetReturnNumber"
+              },
+              "parameters": [
+                "GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].max)"
+              ]
+            }
+          ]
+        }
+      ],
+      "expressionType": {
+        "type": "expression"
+      },
+      "parameters": [
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Get the JSON data of the list of bags (with all the slots)",
+      "fullName": "Bag list JSON data",
+      "functionType": "StringExpression",
+      "name": "BagListJSON",
+      "sentence": "Checki if _PARAM3_ _PARAM1_ items can fit in bag _PARAM2_ in slot _PARAM4_.",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "value": "SetReturnString"
+              },
+              "parameters": [
+                "GlobalVarToJSON(__BetterInventory.Bags)"
+              ]
+            }
+          ]
+        }
+      ],
+      "expressionType": {
+        "type": "string"
+      },
+      "parameters": [],
+      "objectGroups": []
+    },
+    {
+      "description": "Check if a number of items fit in a bag",
+      "fullName": "Item fits",
+      "functionType": "Condition",
+      "name": "ItemFits",
+      "sentence": "Checki if _PARAM3_ _PARAM1_ items can fit in bag _PARAM2_ in slot _PARAM4_.",
+      "events": [
+        {
+          "colorB": 228,
+          "colorG": 176,
+          "colorR": 74,
+          "creationTime": 0,
+          "name": "Check if items fit in a slot in the bag",
+          "source": "",
+          "type": "BuiltinCommonInstructions::Group",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "!=",
+                    "-1"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "<",
+                    "GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].max)"
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "value": "ModVarScene"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Temp.itemNum",
+                    "=",
+                    "GetArgumentAsNumber(\"quantity\")"
+                  ]
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "StrEqual"
+                      },
+                      "parameters": [
+                        "GetArgumentAsString(\"item\")",
+                        "=",
+                        "GlobalVariableString(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name)"
+                      ]
+                    }
+                  ],
+                  "actions": [],
+                  "events": [
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "VarGlobal"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                            ">",
+                            "GetArgumentAsNumber(\"quantity\")"
+                          ]
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "ModVarGlobal"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                            "-",
+                            "GetArgumentAsNumber(\"quantity\")"
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "ModVarScene"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Temp.itemNum",
+                            "-",
+                            "GetArgumentAsNumber(\"quantity\")"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "VarGlobal"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                            "<=",
+                            "GetArgumentAsNumber(\"quantity\")"
+                          ]
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "ModVarScene"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Temp.itemNum",
+                            "-",
+                            "GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity)"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "colorB": 228,
+          "colorG": 176,
+          "colorR": 74,
+          "creationTime": 0,
+          "name": "Check if items fit in the bag",
+          "source": "",
+          "type": "BuiltinCommonInstructions::Group",
+          "events": [
+            {
+              "disabled": true,
+              "folded": true,
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "<=",
+                    "-1"
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "value": "SetSceneVariableAsBoolean"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Temp.found",
+                    ""
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "ModVarScene"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Temp.itemNum",
+                    "=",
+                    "GetArgumentAsNumber(\"quantity\")"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "ModVarScene"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Temp.slotNum",
+                    "=",
+                    "0"
+                  ]
+                }
+              ],
+              "events": [
+                {
+                  "infiniteLoopWarning": true,
+                  "type": "BuiltinCommonInstructions::While",
+                  "whileConditions": [
+                    {
+                      "type": {
+                        "value": "VarGlobal"
+                      },
+                      "parameters": [
+                        "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].max",
+                        ">",
+                        "Variable(__BetterInventory.Temp.slotNum)"
+                      ]
+                    },
+                    {
+                      "type": {
+                        "value": "SceneVariableAsBoolean"
+                      },
+                      "parameters": [
+                        "__BetterInventory.Temp.found",
+                        "False"
+                      ]
+                    }
+                  ],
+                  "conditions": [],
+                  "actions": [],
+                  "events": [
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "VarGlobalTxt"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[Variable(__BetterInventory.Temp.slotNum)].name",
+                            "=",
+                            "GetArgumentAsString(\"item\")"
+                          ]
+                        }
+                      ],
+                      "actions": [],
+                      "events": [
+                        {
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [
+                            {
+                              "type": {
+                                "value": "VarGlobal"
+                              },
+                              "parameters": [
+                                "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[Variable(__BetterInventory.Temp.slotNum)].quantity",
+                                ">",
+                                "Variable(__BetterInventory.Temp.itemNum)"
+                              ]
+                            }
+                          ],
+                          "actions": [
+                            {
+                              "type": {
+                                "value": "SetSceneVariableAsBoolean"
+                              },
+                              "parameters": [
+                                "__BetterInventory.Temp.found",
+                                "True"
+                              ]
+                            },
+                            {
+                              "type": {
+                                "value": "ModVarScene"
+                              },
+                              "parameters": [
+                                "__BetterInventory.Temp.itemNum",
+                                "-",
+                                "Variable(__BetterInventory.Temp.itemNum)"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [
+                            {
+                              "type": {
+                                "value": "VarGlobal"
+                              },
+                              "parameters": [
+                                "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[Variable(__BetterInventory.Temp.slotNum)].quantity",
+                                "<=",
+                                "Variable(__BetterInventory.Temp.itemNum)"
+                              ]
+                            }
+                          ],
+                          "actions": [
+                            {
+                              "type": {
+                                "value": "ModVarScene"
+                              },
+                              "parameters": [
+                                "__BetterInventory.Temp.itemNum",
+                                "-",
+                                "GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[Variable(__BetterInventory.Temp.slotNum)].quantity)"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "ModVarScene"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Temp.slotNum",
+                            "+",
+                            "1"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "<=",
+                    "-1"
+                  ]
+                }
+              ],
+              "actions": [],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::JsCode",
+                  "inlineCode": [
+                    "let bags = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Bags;\r",
+                    "const bagName = eventsFunctionContext.getArgument(\"bag\")\r",
+                    "const item = eventsFunctionContext.getArgument(\"item\");\r",
+                    "let quantity = eventsFunctionContext.getArgument(\"quantity\");\r",
+                    "let items = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Items;\r",
+                    "let foundSlot;\r",
+                    "let foundSlotIndex;\r",
+                    "let result = true;\r",
+                    "\r",
+                    "while (quantity > 0) {\r",
+                    "    if (!bags[bagName]) {\r",
+                    "        console.error(\"No such bag exists\")\r",
+                    "        break\r",
+                    "    }\r",
+                    "    const slots = Object.assign([], bags[bagName].slots);\r",
+                    "    slots.length = bags[bagName].max\r",
+                    "\r",
+                    "    foundSlotIndex = slots.indexOf(slots.find(i => items[item].max - i.quantity > 0 && i.quantity > 0 && i.name === item));\r",
+                    "    foundSlot = bags[bagName].slots[foundSlotIndex];\r",
+                    "    if (foundSlotIndex < 0) {\r",
+                    "        foundSlotIndex = slots.indexOf(slots.find(i => i.quantity == false))\r",
+                    "        foundSlot = bags[bagName].slots[foundSlotIndex];\r",
+                    "    }\r",
+                    "    if (foundSlotIndex >= 0) {\r",
+                    "        if (items[item].max - foundSlot.quantity >= quantity) {\r",
+                    "            foundSlot.quantity += quantity;\r",
+                    "            quantity = 0;\r",
+                    "        } else {\r",
+                    "            quantity -= items[item].max - foundSlot.quantity;\r",
+                    "            foundSlot.quantity = items[item].max;\r",
+                    "        };\r",
+                    "        foundSlot.name = item;\r",
+                    "    } else {\r",
+                    "        runtimeScene.getGame().getVariables().get(\"__BetterInventory\").getChild(\"temp\").getChild(\"itemNum\").setNumber(quantity);\r",
+                    "        quantity = 0\r",
+                    "        result = false\r",
+                    "    };\r",
+                    "}\r",
+                    "eventsFunctionContext.returnValue = result;"
+                  ],
+                  "parameterObjects": "",
+                  "useStrict": true,
+                  "eventsSheetExpanded": true
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "disabled": true,
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "value": "VarScene"
+              },
+              "parameters": [
+                "__BetterInventory.Temp.itemNum",
+                ">",
+                "0"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "value": "SetReturnBoolean"
+              },
+              "parameters": [
+                "False"
+              ]
+            }
+          ]
+        },
+        {
+          "disabled": true,
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "value": "VarScene"
+              },
+              "parameters": [
+                "__BetterInventory.Temp.itemNum",
+                "<=",
+                "0"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "value": "SetReturnBoolean"
+              },
+              "parameters": [
+                "True"
+              ]
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Name of the item",
+          "name": "item",
+          "supplementaryInformation": "sceneitem",
+          "type": "identifier"
+        },
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Number of items to be added",
+          "name": "quantity",
+          "type": "expression"
+        },
+        {
+          "description": "Slot (-1 for auto)",
+          "name": "slot",
+          "type": "expression"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Remove an item from an bag",
+      "fullName": "Remove an item",
+      "functionType": "Action",
+      "name": "RemoveItem",
+      "sentence": "Remove _PARAM3_ _PARAM1_ items from bag _PARAM2_ in slot _PARAM4_. (Ignore item name: _PARAM5_)",
+      "events": [
+        {
+          "colorB": 228,
+          "colorG": 176,
+          "colorR": 74,
+          "creationTime": 0,
+          "name": "Remove items from a slot in the bag",
+          "source": "",
+          "type": "BuiltinCommonInstructions::Group",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "!=",
+                    "-1"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "<",
+                    "GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].max)"
+                  ]
+                }
+              ],
+              "actions": [],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "BuiltinCommonInstructions::Or"
+                      },
+                      "parameters": [],
+                      "subInstructions": [
+                        {
+                          "type": {
+                            "value": "StrEqual"
+                          },
+                          "parameters": [
+                            "GetArgumentAsString(\"item\")",
+                            "=",
+                            "GlobalVariableString(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name)"
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "GetArgumentAsBoolean"
+                          },
+                          "parameters": [
+                            "\"ignoreName\""
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "actions": [],
+                  "events": [
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "VarGlobal"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                            "<=",
+                            "GetArgumentAsNumber(\"quantity\")"
+                          ]
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "ModVarGlobal"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                            "=",
+                            "0"
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "ModVarGlobalTxt"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name",
+                            "=",
+                            "\"0\""
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "VarGlobal"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                            ">",
+                            "GetArgumentAsNumber(\"quantity\")"
+                          ]
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "ModVarGlobal"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                            "-",
+                            "GetArgumentAsNumber(\"quantity\")"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "colorB": 228,
+          "colorG": 176,
+          "colorR": 74,
+          "creationTime": 0,
+          "name": "Remove items from the bag automatically",
+          "source": "",
+          "type": "BuiltinCommonInstructions::Group",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "<=",
+                    "-1"
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "value": "SetSceneVariableAsBoolean"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Temp.found",
+                    ""
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "ModVarScene"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Temp.itemNum",
+                    "=",
+                    "GetArgumentAsNumber(\"quantity\")"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "ModVarScene"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Temp.slotNum",
+                    "=",
+                    "0"
+                  ]
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::JsCode",
+                  "inlineCode": [
+                    "let bags = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Bags;\r",
+                    "const bagName = eventsFunctionContext.getArgument(\"bag\");\r",
+                    "const item = eventsFunctionContext.getArgument(\"item\");\r",
+                    "let quantity = eventsFunctionContext.getArgument(\"quantity\");\r",
+                    "while (quantity > 0) {\r",
+                    "    const slots = Object.values(bags[bagName].slots);\r",
+                    "    let foundSlot = bags[bagName].slots[slots.lastIndexOf(slots.findLast(i => i.quantity != 0 && i.name === item))];\r",
+                    "    if (foundSlot) {\r",
+                    "        if (foundSlot.quantity >= quantity) {\r",
+                    "            foundSlot.quantity -= quantity;\r",
+                    "            quantity = 0;\r",
+                    "        } else {\r",
+                    "            quantity -= foundSlot.quantity;\r",
+                    "            foundSlot.quantity = 0;\r",
+                    "        };\r",
+                    "    }else{\r",
+                    "        quantity = 0;\r",
+                    "    }\r",
+                    "};\r",
+                    "\r",
+                    "\r",
+                    "runtimeScene.getGame().getVariables().get(\"__BetterInventory\").getChild(\"Bags\").fromJSObject(bags);"
+                  ],
+                  "parameterObjects": "",
+                  "useStrict": true,
+                  "eventsSheetExpanded": true
+                },
+                {
+                  "colorB": 228,
+                  "colorG": 176,
+                  "colorR": 74,
+                  "creationTime": 0,
+                  "disabled": true,
+                  "folded": true,
+                  "name": "Don't use",
+                  "source": "",
+                  "type": "BuiltinCommonInstructions::Group",
+                  "events": [
+                    {
+                      "disabled": true,
+                      "infiniteLoopWarning": true,
+                      "type": "BuiltinCommonInstructions::While",
+                      "whileConditions": [
+                        {
+                          "type": {
+                            "value": "BuiltinCommonInstructions::Or"
+                          },
+                          "parameters": [],
+                          "subInstructions": [
+                            {
+                              "type": {
+                                "value": "VarGlobal"
+                              },
+                              "parameters": [
+                                "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].max",
+                                ">=",
+                                "Variable(__BetterInventory.Temp.slotNum)"
+                              ]
+                            },
+                            {
+                              "type": {
+                                "value": "BuiltinCommonInstructions::And"
+                              },
+                              "parameters": [],
+                              "subInstructions": [
+                                {
+                                  "type": {
+                                    "value": "VarGlobal"
+                                  },
+                                  "parameters": [
+                                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].max",
+                                    "<=",
+                                    "-1"
+                                  ]
+                                },
+                                {
+                                  "type": {
+                                    "value": "VarScene"
+                                  },
+                                  "parameters": [
+                                    "__BetterInventory.Temp.slotNum",
+                                    "<=",
+                                    "GlobalVariableChildCount(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots)"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "SceneVariableAsBoolean"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Temp.found",
+                            "False"
+                          ]
+                        }
+                      ],
+                      "conditions": [],
+                      "actions": [],
+                      "events": [
+                        {
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [
+                            {
+                              "type": {
+                                "value": "BuiltinCommonInstructions::Or"
+                              },
+                              "parameters": [],
+                              "subInstructions": [
+                                {
+                                  "type": {
+                                    "value": "VarGlobalTxt"
+                                  },
+                                  "parameters": [
+                                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[Variable(__BetterInventory.Temp.slotNum)].name",
+                                    "=",
+                                    "GetArgumentAsString(\"item\")"
+                                  ]
+                                },
+                                {
+                                  "type": {
+                                    "value": "GetArgumentAsBoolean"
+                                  },
+                                  "parameters": [
+                                    "\"ignoreName\""
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "actions": [],
+                          "events": [
+                            {
+                              "type": "BuiltinCommonInstructions::Standard",
+                              "conditions": [
+                                {
+                                  "type": {
+                                    "value": "VarGlobal"
+                                  },
+                                  "parameters": [
+                                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[Variable(__BetterInventory.Temp.slotNum)].quantity",
+                                    "<=",
+                                    "Variable(__BetterInventory.Temp.itemNum)"
+                                  ]
+                                }
+                              ],
+                              "actions": [
+                                {
+                                  "type": {
+                                    "value": "ModVarScene"
+                                  },
+                                  "parameters": [
+                                    "__BetterInventory.Temp.itemNum",
+                                    "-",
+                                    "GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[Variable(__BetterInventory.Temp.slotNum)].quantity)"
+                                  ]
+                                },
+                                {
+                                  "type": {
+                                    "value": "ModVarGlobal"
+                                  },
+                                  "parameters": [
+                                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[Variable(__BetterInventory.Temp.slotNum)].quantity",
+                                    "=",
+                                    "0"
+                                  ]
+                                },
+                                {
+                                  "type": {
+                                    "value": "ModVarGlobalTxt"
+                                  },
+                                  "parameters": [
+                                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[Variable(__BetterInventory.Temp.slotNum)].name",
+                                    "=",
+                                    "\"0\""
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "BuiltinCommonInstructions::Standard",
+                              "conditions": [
+                                {
+                                  "type": {
+                                    "value": "VarGlobal"
+                                  },
+                                  "parameters": [
+                                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[Variable(__BetterInventory.Temp.slotNum)].quantity",
+                                    ">",
+                                    "Variable(__BetterInventory.Temp.itemNum)"
+                                  ]
+                                }
+                              ],
+                              "actions": [
+                                {
+                                  "type": {
+                                    "value": "SetSceneVariableAsBoolean"
+                                  },
+                                  "parameters": [
+                                    "__BetterInventory.Temp.found",
+                                    "True"
+                                  ]
+                                },
+                                {
+                                  "type": {
+                                    "value": "ModVarGlobal"
+                                  },
+                                  "parameters": [
+                                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[Variable(__BetterInventory.Temp.slotNum)].quantity",
+                                    "-",
+                                    "Variable(__BetterInventory.Temp.itemNum)"
+                                  ]
+                                },
+                                {
+                                  "type": {
+                                    "value": "ModVarScene"
+                                  },
+                                  "parameters": [
+                                    "__BetterInventory.Temp.itemNum",
+                                    "-",
+                                    "Variable(__BetterInventory.Temp.itemNum)"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [],
+                          "actions": [
+                            {
+                              "type": {
+                                "value": "ModVarScene"
+                              },
+                              "parameters": [
+                                "__BetterInventory.Temp.slotNum",
+                                "+",
+                                "1"
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "parameters": []
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Name of the item",
+          "name": "item",
+          "supplementaryInformation": "sceneitem",
+          "type": "identifier"
+        },
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Number of items to be removed",
+          "name": "quantity",
+          "type": "expression"
+        },
+        {
+          "description": "Slot (-1 for auto)",
+          "name": "slot",
+          "type": "expression"
+        },
+        {
+          "description": "Ignore the name of the object while removing items",
+          "name": "ignoreName",
+          "type": "yesorno"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Empty a slot in a bag",
+      "fullName": "Empty a slot",
+      "functionType": "Action",
+      "name": "EmptySlot",
+      "sentence": "Empty slot _PARAM2_ of the bag _PARAM1_",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "value": "Egal"
+              },
+              "parameters": [
+                "GetArgumentAsNumber(\"slot\")",
+                ">",
+                "-1"
+              ]
+            },
+            {
+              "type": {
+                "value": "Egal"
+              },
+              "parameters": [
+                "GetArgumentAsNumber(\"slot\")",
+                "<",
+                "GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].max)"
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "value": "ModVarGlobal"
+              },
+              "parameters": [
+                "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                "=",
+                "0"
+              ]
+            },
+            {
+              "type": {
+                "value": "ModVarGlobalTxt"
+              },
+              "parameters": [
+                "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name",
+                "=",
+                "\"0\""
+              ]
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Slot",
+          "name": "slot",
+          "type": "expression"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Add an item to an bag",
+      "fullName": "Add an item",
+      "functionType": "Action",
+      "name": "AddItem",
+      "sentence": "Add _PARAM3_ _PARAM1_ items to bag _PARAM2_ in slot _PARAM4_. (Extra bag: _PARAM5_)",
+      "events": [
+        {
+          "colorB": 228,
+          "colorG": 176,
+          "colorR": 74,
+          "creationTime": 0,
+          "name": "Add items to a slot in the bag",
+          "source": "",
+          "type": "BuiltinCommonInstructions::Group",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "!=",
+                    "-1"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "<",
+                    "GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].max)"
+                  ]
+                }
+              ],
+              "actions": [],
+              "events": [
+                {
+                  "folded": true,
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "StrEqual"
+                      },
+                      "parameters": [
+                        "GetArgumentAsString(\"item\")",
+                        "=",
+                        "GlobalVariableString(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name)"
+                      ]
+                    }
+                  ],
+                  "actions": [],
+                  "events": [
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "VarGlobal"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Items[GetArgumentAsString(\"item\")].max",
+                            "<",
+                            "GetArgumentAsNumber(\"quantity\") + GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity)"
+                          ]
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "ModVarGlobal"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                            "=",
+                            "GlobalVariable(__BetterInventory.Items[GetArgumentAsString(\"item\")].max)"
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "ModVarGlobalTxt"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name",
+                            "=",
+                            "GetArgumentAsString(\"item\")"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "VarGlobal"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Items[GetArgumentAsString(\"item\")].max",
+                            ">=",
+                            "GetArgumentAsNumber(\"quantity\") + GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity)"
+                          ]
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "ModVarGlobal"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                            "+",
+                            "GetArgumentAsNumber(\"quantity\")"
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "ModVarGlobalTxt"
+                          },
+                          "parameters": [
+                            "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name",
+                            "=",
+                            "GetArgumentAsString(\"item\")"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "StrEqual"
+                      },
+                      "parameters": [
+                        "GetArgumentAsString(\"item\")",
+                        "!=",
+                        "GlobalVariableString(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name)"
+                      ]
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "ModVarGlobal"
+                      },
+                      "parameters": [
+                        "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                        "=",
+                        "GetArgumentAsNumber(\"quantity\")"
+                      ]
+                    },
+                    {
+                      "type": {
+                        "value": "ModVarGlobalTxt"
+                      },
+                      "parameters": [
+                        "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name",
+                        "=",
+                        "GetArgumentAsString(\"item\")"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        },
+        {
+          "colorB": 228,
+          "colorG": 176,
+          "colorR": 74,
+          "creationTime": 0,
+          "name": "Add items to the bag automatically",
+          "source": "",
+          "type": "BuiltinCommonInstructions::Group",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "Egal"
+                  },
+                  "parameters": [
+                    "GetArgumentAsNumber(\"slot\")",
+                    "<=",
+                    "-1"
+                  ]
+                }
+              ],
+              "actions": [],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::JsCode",
+                  "inlineCode": [
+                    "function addItemToBag(runtimeScene, bags, items, bagName, item, infinite, quantity) {\r",
+                    "  // Initialize some variables we'll use later in the function\r",
+                    "  let foundSlot;\r",
+                    "  let foundSlotIndex;\r",
+                    "  let done = false;\r",
+                    "\r",
+                    "  // Loop as long as there are items left to add to the bag\r",
+                    "  // or until the loop is explicitly broken by setting `done` to `true`\r",
+                    "  while (quantity > 0 && !done) {\r",
+                    "    // If no bag with the given name exists, log an error message and return, unless it is supposed to be a bag with infinite slots\r",
+                    "    if (!bags[bagName]) {\r",
+                    "      if (infinite) {\r",
+                    "        bags[bagName] = {};\r",
+                    "        bags[bagName].slots = [{ name: \"0\", quantity: 0 }];\r",
+                    "        bags[bagName].max = 1\r",
+                    "      }\r",
+                    "      else{\r",
+                    "        console.error(\"No such bag exists\")\r",
+                    "        break\r",
+                    "      }\r",
+                    "    }\r",
+                    "    // Make a copy of the bag's slots array and ensure that it has the correct length\r",
+                    "    const slots = [...bags[bagName].slots];\r",
+                    "    slots.length = bags[bagName].max\r",
+                    "\r",
+                    "    // Find the first slot in the bag that has room for more of the given item\r",
+                    "    // and that already contains at least one of the given item\r",
+                    "    foundSlotIndex = slots.indexOf(slots.find(i => items[item].max - i.quantity > 0 && i.quantity > 0 && i.name === item));\r",
+                    "    foundSlot = bags[bagName].slots[foundSlotIndex];\r",
+                    "\r",
+                    "    // If no such slot was found, find the first empty slot in the bag instead\r",
+                    "    if (foundSlotIndex < 0) {\r",
+                    "      foundSlotIndex = slots.indexOf(slots.find(i => i.quantity == false))\r",
+                    "      foundSlot = bags[bagName].slots[foundSlotIndex];\r",
+                    "    }\r",
+                    "\r",
+                    "    // If a suitable slot was found, add as many items as possible to it\r",
+                    "    if (foundSlotIndex >= 0) {\r",
+                    "      if (items[item].max - foundSlot.quantity >= quantity) {\r",
+                    "        foundSlot.quantity += quantity;\r",
+                    "        quantity = 0;\r",
+                    "      } else {\r",
+                    "        quantity -= items[item].max - foundSlot.quantity;\r",
+                    "        foundSlot.quantity = items[item].max;\r",
+                    "      };\r",
+                    "      foundSlot.name = item;\r",
+                    "    }\r",
+                    "\r",
+                    "    // If no suitable slot was found, set a variable with the remaining quantity\r",
+                    "    // and exit the loop by setting `done` to `true` unless it is supposed to be a bag with infinite slots\r",
+                    "    else if (infinite) {\r",
+                    "      const lastMaxSlot = bags[bagName].max;\r",
+                    "\r",
+                    "      bags[bagName].slots.length += 1;\r",
+                    "      bags[bagName].max += 1;\r",
+                    "      bags[bagName].slots = bags[bagName].slots.fill({ name: \"0\", quantity: 0 }, lastMaxSlot);\r",
+                    "    }\r",
+                    "    else {\r",
+                    "      done = true;\r",
+                    "    }\r",
+                    "  }\r",
+                    "\r",
+                    "  // Update the bags in the game's variables\r",
+                    "  runtimeScene.getGame().getVariables().get(\"__BetterInventory\").getChild(\"Bags\").fromJSObject(bags);\r",
+                    "  \r",
+                    "  return quantity\r",
+                    "}\r",
+                    "\r",
+                    "// Get the bags and items from the game's variables\r",
+                    "let bags = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Bags;\r",
+                    "let items = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Items;\r",
+                    "\r",
+                    "const bagName = eventsFunctionContext.getArgument(\"bag\")\r",
+                    "const extraBagName = eventsFunctionContext.getArgument(\"extraBag\");\r",
+                    "const item = eventsFunctionContext.getArgument(\"item\");\r",
+                    "let quantity = eventsFunctionContext.getArgument(\"quantity\")\r",
+                    "const infinite = eventsFunctionContext.getArgument(\"infinite\");\r",
+                    "\r",
+                    "// Add the item to the bag, passing in the result of adding the item to the extra bag as the quantity\r",
+                    "addItemToBag(runtimeScene, bags, items, extraBagName, item, true, addItemToBag(runtimeScene, bags, items, bagName, item, infinite, quantity));"
+                  ],
+                  "parameterObjects": "",
+                  "useStrict": true,
+                  "eventsSheetExpanded": true
+                }
+              ]
+            }
+          ],
+          "parameters": []
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Name of the item",
+          "name": "item",
+          "supplementaryInformation": "sceneitem",
+          "type": "identifier"
+        },
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Number of items",
+          "name": "quantity",
+          "type": "expression"
+        },
+        {
+          "description": "Slot (-1 for auto)",
+          "name": "slot",
+          "type": "expression"
+        },
+        {
+          "description": "Name of an extra bag (will be created if it doesn't exist)",
+          "longDescription": "A bag to store all the items that couldn't be added to the specified bag",
+          "name": "extraBag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Add more slots if not enough space?",
+          "name": "infinite",
+          "type": "yesorno"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Add the items if a bag to another bag",
+      "fullName": "Add items of a bag",
+      "functionType": "Action",
+      "name": "Addbag",
+      "sentence": "Add items of bag _PARAM1_ to bag _PARAM2_.",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::JsCode",
+          "inlineCode": [
+            "function addItemToBag(runtimeScene, bags, items, bagName, item, infinite, quantity) {\r",
+            "  // Initialize some variables we'll use later in the function\r",
+            "  let foundSlot;\r",
+            "  let foundSlotIndex;\r",
+            "  let done = false;\r",
+            "\r",
+            "  // Loop as long as there are items left to add to the bag\r",
+            "  // or until the loop is explicitly broken by setting `done` to `true`\r",
+            "  while (quantity > 0 && !done) {\r",
+            "    // If no bag with the given name exists, log an error message and return, unless it is supposed to be a bag with infinite slots\r",
+            "    if (!bags[bagName]) {\r",
+            "      if (infinite) {\r",
+            "        bags[bagName] = {};\r",
+            "        bags[bagName].slots = [{ name: \"0\", quantity: 0 }];\r",
+            "        bags[bagName].max = 1\r",
+            "      }\r",
+            "      else {\r",
+            "        console.error(\"No such bag exists, can't add to it\")\r",
+            "        break\r",
+            "      }\r",
+            "    }\r",
+            "    // Make a copy of the bag's slots array and ensure that it has the correct length\r",
+            "    const slots = [...bags[bagName].slots];\r",
+            "    slots.length = bags[bagName].max\r",
+            "\r",
+            "    // Find the first slot in the bag that has room for more of the given item\r",
+            "    // and that already contains at least one of the given item\r",
+            "    foundSlotIndex = slots.indexOf(slots.find(i => items[item].max - i.quantity > 0 && i.quantity > 0 && i.name === item));\r",
+            "    foundSlot = bags[bagName].slots[foundSlotIndex];\r",
+            "\r",
+            "    // If no such slot was found, find the first empty slot in the bag instead\r",
+            "    if (foundSlotIndex < 0) {\r",
+            "      foundSlotIndex = slots.indexOf(slots.find(i => i.quantity == false))\r",
+            "      foundSlot = bags[bagName].slots[foundSlotIndex];\r",
+            "    }\r",
+            "\r",
+            "    // If a suitable slot was found, add as many items as possible to it\r",
+            "    if (foundSlotIndex >= 0) {\r",
+            "      if (items[item].max - foundSlot.quantity >= quantity) {\r",
+            "        foundSlot.quantity += quantity;\r",
+            "        quantity = 0;\r",
+            "      } else {\r",
+            "        quantity -= items[item].max - foundSlot.quantity;\r",
+            "        foundSlot.quantity = items[item].max;\r",
+            "      };\r",
+            "      foundSlot.name = item;\r",
+            "    }\r",
+            "\r",
+            "    // If no suitable slot was found, set a variable with the remaining quantity\r",
+            "    // and exit the loop by setting `done` to `true` unless it is supposed to be a bag with infinite slots\r",
+            "    else if (infinite) {\r",
+            "      const lastMaxSlot = bags[bagName].max;\r",
+            "\r",
+            "      bags[bagName].slots.length += 1;\r",
+            "      bags[bagName].max += 1;\r",
+            "      bags[bagName].slots = bags[bagName].slots.fill({ name: \"0\", quantity: 0 }, lastMaxSlot);\r",
+            "    }\r",
+            "    else {\r",
+            "      done = true;\r",
+            "    }\r",
+            "  }\r",
+            "\r",
+            "  // Update the bags in the game's variables\r",
+            "  runtimeScene.getGame().getVariables().get(\"__BetterInventory\").getChild(\"Bags\").getChild(bagName).fromJSObject(bags[bagName])\r",
+            "  return quantity;\r",
+            "}\r",
+            "\r",
+            "function addBagToBag(runtimeScene, bagss, items, bagToAddName, targetBagName, infinite) {\r",
+            "\r",
+            "  if (!bagss[bagToAddName]) {\r",
+            "    console.error(\"No such bag exists, no items can be added to the target bag\")\r",
+            "    return\r",
+            "  }\r",
+            "\r",
+            "  const bagSlots = [...bagss[bagToAddName].slots];\r",
+            "  bagSlots.length = bagss[bagToAddName].max;\r",
+            "  let foundSlotIndexBag = bagSlots.indexOf(bagSlots.find(i => i.quantity > 0));\r",
+            "  let foundSlotBag = bagss[bagToAddName].slots[foundSlotIndexBag];\r",
+            "  while (foundSlotIndexBag > -1) {\r",
+            "    const leftQuantity = addItemToBag(runtimeScene, bagss, items, targetBagName, foundSlotBag.name, infinite, foundSlotBag.quantity);\r",
+            "\r",
+            "\r",
+            "    bags[bagToAddName].slots[foundSlotIndexBag].quantity -= foundSlotBag.quantity - leftQuantity;\r",
+            "\r",
+            "    foundSlotIndexBag = bagSlots.indexOf(bagSlots.slice(foundSlotIndexBag + 1).find(i => i.quantity > 0), foundSlotIndexBag + 1);\r",
+            "    foundSlotBag = bagss[bagToAddName].slots[foundSlotIndexBag]\r",
+            "    if (leftQuantity > 0) {\r",
+            "      break\r",
+            "    }\r",
+            "  }\r",
+            "\r",
+            "  // Update the bag to add in the game's variables\r",
+            "  runtimeScene.getGame().getVariables().get(\"__BetterInventory\").getChild(\"Bags\").getChild(bagToAddName).fromJSObject(bags[bagToAddName]);\r",
+            "}\r",
+            "\r",
+            "// Get the bags and items from the game's variables\r",
+            "let bags = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Bags;\r",
+            "console.log(bags)\r",
+            "let items = runtimeScene.getGame().getVariables().get(\"__BetterInventory\").toJSObject().Items;\r",
+            "\r",
+            "const bagToAddName = eventsFunctionContext.getArgument(\"bagToAdd\")\r",
+            "const targetBagName = eventsFunctionContext.getArgument(\"targetBag\");\r",
+            "const infinite = eventsFunctionContext.getArgument(\"infinite\");\r",
+            "\r",
+            "\r",
+            "addBagToBag(runtimeScene, bags, items, bagToAddName, targetBagName, infinite)"
+          ],
+          "parameterObjects": "",
+          "useStrict": true,
+          "eventsSheetExpanded": true
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Name of the bag to add",
+          "name": "bagToAdd",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Name of the target bag",
+          "name": "targetBag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        },
+        {
+          "description": "Add more slots if not enough space?",
+          "name": "infinite",
+          "type": "yesorno"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Check if a slot is empty in a bag",
+      "fullName": "Slot is empty",
+      "functionType": "Condition",
+      "name": "IsSlotEmpty",
+      "sentence": "Check if slot _PARAM1_ is empty in bag _PARAM2_.",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "value": "SetSceneVariableAsBoolean"
+              },
+              "parameters": [
+                "__BetterInventory.Temp.emptySlot",
+                "False"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "value": "BuiltinCommonInstructions::Or"
+              },
+              "parameters": [],
+              "subInstructions": [
+                {
+                  "type": {
+                    "value": "VarGlobal"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity",
+                    "<=",
+                    "0"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "VarGlobalTxt"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name",
+                    "=",
+                    "\"\""
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "VarGlobalTxt"
+                  },
+                  "parameters": [
+                    "__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name",
+                    "=",
+                    "\"0\""
+                  ]
+                }
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "value": "SetSceneVariableAsBoolean"
+              },
+              "parameters": [
+                "__BetterInventory.Temp.emptySlot",
+                "True"
+              ]
+            },
+            {
+              "type": {
+                "value": "SetReturnBoolean"
+              },
+              "parameters": [
+                "True"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "value": "SceneVariableAsBoolean"
+              },
+              "parameters": [
+                "__BetterInventory.Temp.emptySlot",
+                ""
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "value": "SetReturnBoolean"
+              },
+              "parameters": [
+                "False"
+              ]
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "description": "Slot",
+          "name": "slot",
+          "type": "expression"
+        },
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Get the quantity of an item in a slot",
+      "fullName": "Item quantity",
+      "functionType": "Expression",
+      "name": "ItemQuantity",
+      "sentence": "",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "value": "SetReturnNumber"
+              },
+              "parameters": [
+                "GlobalVariable(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].quantity)"
+              ]
+            }
+          ]
+        }
+      ],
+      "expressionType": {
+        "type": "expression"
+      },
+      "parameters": [
+        {
+          "description": "Slot",
+          "name": "slot",
+          "type": "expression"
+        },
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        }
+      ],
+      "objectGroups": []
+    },
+    {
+      "description": "Get the name of an item in a slot",
+      "fullName": "Item name",
+      "functionType": "StringExpression",
+      "name": "ItemName",
+      "sentence": "",
+      "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [],
+          "actions": [
+            {
+              "type": {
+                "value": "SetReturnString"
+              },
+              "parameters": [
+                "GlobalVariableString(__BetterInventory.Bags[GetArgumentAsString(\"bag\")].slots[GetArgumentAsNumber(\"slot\")].name)"
+              ]
+            }
+          ]
+        }
+      ],
+      "expressionType": {
+        "type": "string"
+      },
+      "parameters": [
+        {
+          "description": "Slot",
+          "name": "slot",
+          "type": "expression"
+        },
+        {
+          "description": "Name of the bag",
+          "name": "bag",
+          "supplementaryInformation": "scenebag",
+          "type": "identifier"
+        }
+      ],
+      "objectGroups": []
+    }
+  ],
+  "eventsBasedBehaviors": [],
+  "eventsBasedObjects": []
+}
