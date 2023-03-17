@@ -71,34 +71,6 @@
     },
     {
       "angle": 0,
-      "customSize": false,
-      "height": 0,
-      "layer": "",
-      "name": "Enemy_BackForth",
-      "persistentUuid": "6d7120a8-70c4-4b25-a0f9-530199bf3e9f",
-      "width": 0,
-      "x": 96,
-      "y": 256,
-      "zOrder": 3,
-      "numberProperties": [],
-      "stringProperties": [],
-      "initialVariables": [
-        {
-          "folded": true,
-          "name": "Speed",
-          "type": "string",
-          "value": "200"
-        },
-        {
-          "folded": true,
-          "name": "Mode",
-          "type": "boolean",
-          "value": true
-        }
-      ]
-    },
-    {
-      "angle": 0,
       "customSize": true,
       "height": 544,
       "layer": "",
@@ -135,6 +107,62 @@
       "name": "Enemy_BackForth",
       "persistentUuid": "d8a4c402-9fdc-4724-b971-ce11f813bfd7",
       "width": 0,
+      "x": 704,
+      "y": 160,
+      "zOrder": 4,
+      "numberProperties": [],
+      "stringProperties": [],
+      "initialVariables": [
+        {
+          "folded": true,
+          "name": "Speed",
+          "type": "string",
+          "value": "300"
+        },
+        {
+          "folded": true,
+          "name": "Mode",
+          "type": "boolean",
+          "value": true
+        }
+      ]
+    },
+    {
+      "angle": 0,
+      "customSize": false,
+      "height": 0,
+      "layer": "",
+      "name": "Enemy_BackForth",
+      "persistentUuid": "79f36402-8683-4f16-9ba0-bb465125047c",
+      "width": 0,
+      "x": 96,
+      "y": 256,
+      "zOrder": 3,
+      "numberProperties": [],
+      "stringProperties": [],
+      "initialVariables": [
+        {
+          "folded": true,
+          "name": "Speed",
+          "type": "string",
+          "value": "200"
+        },
+        {
+          "folded": true,
+          "name": "Mode",
+          "type": "boolean",
+          "value": true
+        }
+      ]
+    },
+    {
+      "angle": 0,
+      "customSize": false,
+      "height": 0,
+      "layer": "",
+      "name": "Enemy_BackForth",
+      "persistentUuid": "176aa8ac-2a22-432f-ae15-e4376d7b67a0",
+      "width": 0,
       "x": 192,
       "y": 352,
       "zOrder": 4,
@@ -154,6 +182,21 @@
           "value": false
         }
       ]
+    },
+    {
+      "angle": 0,
+      "customSize": false,
+      "height": 0,
+      "layer": "",
+      "name": "Gun",
+      "persistentUuid": "608f49fd-0f11-432d-9e99-da27d65c204c",
+      "width": 0,
+      "x": 544,
+      "y": 288,
+      "zOrder": 5,
+      "numberProperties": [],
+      "stringProperties": [],
+      "initialVariables": []
     }
   ],
   "objects": [],

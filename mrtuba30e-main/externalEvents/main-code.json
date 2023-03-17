@@ -27,6 +27,35 @@
               ]
             }
           ]
+        },
+        {
+          "colorB": 107,
+          "colorG": 71,
+          "colorR": 0,
+          "creationTime": 0,
+          "name": "Gun",
+          "source": "",
+          "type": "BuiltinCommonInstructions::Group",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "value": "MettreAutour"
+                  },
+                  "parameters": [
+                    "Gun",
+                    "PlayerBox",
+                    "64",
+                    "AngleBetweenPositions(PlayerBox.CenterX(),PlayerBox.CenterY(),MouseX(),MouseY())"
+                  ]
+                }
+              ]
+            }
+          ],
+          "parameters": []
         }
       ],
       "parameters": []
@@ -45,6 +74,7 @@
           "colorG": 71,
           "colorR": 0,
           "creationTime": 0,
+          "folded": true,
           "name": "Back And Forth Boi",
           "source": "",
           "type": "BuiltinCommonInstructions::Group",
@@ -63,192 +93,7 @@
               "comment2": ""
             },
             {
-              "type": "BuiltinCommonInstructions::Standard",
-              "conditions": [
-                {
-                  "type": {
-                    "value": "ObjectVariableAsBoolean"
-                  },
-                  "parameters": [
-                    "Enemy_BackForth",
-                    "Mode",
-                    "True"
-                  ]
-                }
-              ],
-              "actions": [],
-              "events": [
-                {
-                  "type": "BuiltinCommonInstructions::Standard",
-                  "conditions": [
-                    {
-                      "type": {
-                        "inverted": true,
-                        "value": "FlippedX"
-                      },
-                      "parameters": [
-                        "Enemy_BackForth"
-                      ]
-                    },
-                    {
-                      "type": {
-                        "value": "BuiltinCommonInstructions::Once"
-                      },
-                      "parameters": []
-                    }
-                  ],
-                  "actions": [
-                    {
-                      "type": {
-                        "value": "AddForceXY"
-                      },
-                      "parameters": [
-                        "Enemy_BackForth",
-                        "Enemy_BackForth.Variable(Speed)",
-                        "0",
-                        "1"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "BuiltinCommonInstructions::Standard",
-                  "conditions": [
-                    {
-                      "type": {
-                        "value": "FlippedX"
-                      },
-                      "parameters": [
-                        "Enemy_BackForth"
-                      ]
-                    },
-                    {
-                      "type": {
-                        "value": "BuiltinCommonInstructions::Once"
-                      },
-                      "parameters": []
-                    }
-                  ],
-                  "actions": [
-                    {
-                      "type": {
-                        "value": "AddForceXY"
-                      },
-                      "parameters": [
-                        "Enemy_BackForth",
-                        "-Enemy_BackForth.Variable(Speed)",
-                        "0",
-                        "1"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "BuiltinCommonInstructions::ForEach",
-                  "object": "Enemy_BackForth",
-                  "conditions": [
-                    {
-                      "type": {
-                        "value": "CollisionPoint"
-                      },
-                      "parameters": [
-                        "WallBox",
-                        "Enemy_BackForth.PointX(\"WallCheckHoriz\")",
-                        "Enemy_BackForth.PointY(\"WallCheckHoriz\")"
-                      ]
-                    }
-                  ],
-                  "actions": [],
-                  "events": [
-                    {
-                      "type": "BuiltinCommonInstructions::Standard",
-                      "conditions": [
-                        {
-                          "type": {
-                            "inverted": true,
-                            "value": "FlippedX"
-                          },
-                          "parameters": [
-                            "Enemy_BackForth"
-                          ]
-                        }
-                      ],
-                      "actions": [
-                        {
-                          "type": {
-                            "value": "FlipX"
-                          },
-                          "parameters": [
-                            "Enemy_BackForth",
-                            "yes"
-                          ]
-                        },
-                        {
-                          "type": {
-                            "value": "Arreter"
-                          },
-                          "parameters": [
-                            "Enemy_BackForth"
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "BuiltinCommonInstructions::ForEach",
-                  "object": "Enemy_BackForth",
-                  "conditions": [
-                    {
-                      "type": {
-                        "value": "CollisionPoint"
-                      },
-                      "parameters": [
-                        "WallBox",
-                        "Enemy_BackForth.PointX(\"WallCheckHoriz\")",
-                        "Enemy_BackForth.PointY(\"WallCheckHoriz\")"
-                      ]
-                    }
-                  ],
-                  "actions": [],
-                  "events": [
-                    {
-                      "type": "BuiltinCommonInstructions::Standard",
-                      "conditions": [
-                        {
-                          "type": {
-                            "value": "FlippedX"
-                          },
-                          "parameters": [
-                            "Enemy_BackForth"
-                          ]
-                        }
-                      ],
-                      "actions": [
-                        {
-                          "type": {
-                            "value": "FlipX"
-                          },
-                          "parameters": [
-                            "Enemy_BackForth",
-                            "no"
-                          ]
-                        },
-                        {
-                          "type": {
-                            "value": "Arreter"
-                          },
-                          "parameters": [
-                            "Enemy_BackForth"
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
+              "folded": true,
               "type": "BuiltinCommonInstructions::Standard",
               "conditions": [
                 {
@@ -275,12 +120,6 @@
                       "parameters": [
                         "Enemy_BackForth"
                       ]
-                    },
-                    {
-                      "type": {
-                        "value": "BuiltinCommonInstructions::Once"
-                      },
-                      "parameters": []
                     }
                   ],
                   "actions": [
@@ -292,7 +131,7 @@
                         "Enemy_BackForth",
                         "0",
                         "-Enemy_BackForth.Variable(Speed)",
-                        "1"
+                        "0"
                       ]
                     }
                   ]
@@ -307,12 +146,6 @@
                       "parameters": [
                         "Enemy_BackForth"
                       ]
-                    },
-                    {
-                      "type": {
-                        "value": "BuiltinCommonInstructions::Once"
-                      },
-                      "parameters": []
                     }
                   ],
                   "actions": [
@@ -324,7 +157,7 @@
                         "Enemy_BackForth",
                         "0",
                         "Enemy_BackForth.Variable(Speed)",
-                        "1"
+                        "0"
                       ]
                     }
                   ]
@@ -414,6 +247,181 @@
                         {
                           "type": {
                             "value": "FlipY"
+                          },
+                          "parameters": [
+                            "Enemy_BackForth",
+                            "no"
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "Arreter"
+                          },
+                          "parameters": [
+                            "Enemy_BackForth"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "folded": true,
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "ObjectVariableAsBoolean"
+                  },
+                  "parameters": [
+                    "Enemy_BackForth",
+                    "Mode",
+                    "True"
+                  ]
+                }
+              ],
+              "actions": [],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "inverted": true,
+                        "value": "FlippedX"
+                      },
+                      "parameters": [
+                        "Enemy_BackForth"
+                      ]
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "AddForceXY"
+                      },
+                      "parameters": [
+                        "Enemy_BackForth",
+                        "Enemy_BackForth.Variable(Speed)",
+                        "0",
+                        "0"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "FlippedX"
+                      },
+                      "parameters": [
+                        "Enemy_BackForth"
+                      ]
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "AddForceXY"
+                      },
+                      "parameters": [
+                        "Enemy_BackForth",
+                        "-Enemy_BackForth.Variable(Speed)",
+                        "0",
+                        "0"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "BuiltinCommonInstructions::ForEach",
+                  "object": "Enemy_BackForth",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "CollisionPoint"
+                      },
+                      "parameters": [
+                        "WallBox",
+                        "Enemy_BackForth.PointX(\"WallCheckHoriz\")",
+                        "Enemy_BackForth.PointY(\"WallCheckHoriz\")"
+                      ]
+                    }
+                  ],
+                  "actions": [],
+                  "events": [
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "inverted": true,
+                            "value": "FlippedX"
+                          },
+                          "parameters": [
+                            "Enemy_BackForth"
+                          ]
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "FlipX"
+                          },
+                          "parameters": [
+                            "Enemy_BackForth",
+                            "yes"
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "Arreter"
+                          },
+                          "parameters": [
+                            "Enemy_BackForth"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "BuiltinCommonInstructions::ForEach",
+                  "object": "Enemy_BackForth",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "CollisionPoint"
+                      },
+                      "parameters": [
+                        "WallBox",
+                        "Enemy_BackForth.PointX(\"WallCheckHoriz\")",
+                        "Enemy_BackForth.PointY(\"WallCheckHoriz\")"
+                      ]
+                    }
+                  ],
+                  "actions": [],
+                  "events": [
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "FlippedX"
+                          },
+                          "parameters": [
+                            "Enemy_BackForth"
+                          ]
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "FlipX"
                           },
                           "parameters": [
                             "Enemy_BackForth",
