@@ -18,7 +18,7 @@
     "gridColor": 10401023,
     "gridAlpha": 0.2,
     "snap": true,
-    "zoomFactor": 0.8303667128434205,
+    "zoomFactor": 1.0768523980808833,
     "windowMask": false
   },
   "objectsGroups": [],
@@ -113,13 +113,42 @@
       "numberProperties": [],
       "stringProperties": [],
       "initialVariables": []
+    },
+    {
+      "angle": 9,
+      "customSize": true,
+      "height": 32,
+      "layer": "",
+      "name": "item",
+      "persistentUuid": "11a00984-f4c2-4489-a775-f6baebd5fde1",
+      "width": 32,
+      "x": 702,
+      "y": 222,
+      "zOrder": 7,
+      "numberProperties": [
+        {
+          "name": "animation",
+          "value": 1
+        }
+      ],
+      "stringProperties": [],
+      "initialVariables": []
     }
   ],
   "objects": [],
   "events": [
     {
       "type": "BuiltinCommonInstructions::Standard",
-      "conditions": [],
+      "conditions": [
+        {
+          "type": {
+            "value": "DepartScene"
+          },
+          "parameters": [
+            ""
+          ]
+        }
+      ],
       "actions": [
         {
           "type": {
@@ -129,6 +158,16 @@
             "lv",
             "=",
             "1"
+          ]
+        },
+        {
+          "type": {
+            "value": "ModVarGlobalTxt"
+          },
+          "parameters": [
+            "currentItem",
+            "=",
+            "\"empty\""
           ]
         }
       ]

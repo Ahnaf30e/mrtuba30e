@@ -62,7 +62,20 @@
                       ]
                     }
                   ],
-                  "actions": [],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "CentreCamera"
+                      },
+                      "parameters": [
+                        "",
+                        "lift",
+                        "",
+                        "\"\"",
+                        "0"
+                      ]
+                    }
+                  ],
                   "events": [
                     {
                       "type": "BuiltinCommonInstructions::Standard",
@@ -377,16 +390,6 @@
                     },
                     {
                       "type": {
-                        "value": "ChangeScale"
-                      },
-                      "parameters": [
-                        "liftDoor",
-                        "=",
-                        "2"
-                      ]
-                    },
-                    {
-                      "type": {
                         "value": "ModVarObjetTxt"
                       },
                       "parameters": [
@@ -394,6 +397,16 @@
                         "type",
                         "=",
                         "\"hand\""
+                      ]
+                    },
+                    {
+                      "type": {
+                        "value": "ChangeScale"
+                      },
+                      "parameters": [
+                        "item",
+                        "=",
+                        "2"
                       ]
                     }
                   ],
@@ -529,7 +542,19 @@
                 },
                 {
                   "type": "BuiltinCommonInstructions::Standard",
-                  "conditions": [],
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "VarObjetTxt"
+                      },
+                      "parameters": [
+                        "item",
+                        "type",
+                        "=",
+                        "\"hand\""
+                      ]
+                    }
+                  ],
                   "actions": [
                     {
                       "type": {
@@ -826,6 +851,7 @@
                   "colorG": 64,
                   "colorR": 28,
                   "creationTime": 0,
+                  "folded": true,
                   "name": "Cool Wall Opacity",
                   "source": "",
                   "type": "BuiltinCommonInstructions::Group",
@@ -959,7 +985,7 @@
                   "colorG": 71,
                   "colorR": 0,
                   "creationTime": 0,
-                  "name": "Gun",
+                  "name": "Gun or items",
                   "source": "",
                   "type": "BuiltinCommonInstructions::Group",
                   "events": [
@@ -1001,8 +1027,320 @@
                             "=",
                             "lerp(item.CenterY(), bob.CenterY() + YFromAngleAndDistance(AngleBetweenPositions(bob.CenterX(), bob.CenterY(), MouseX(), MouseY()), 50), 0.5)"
                           ]
+                        },
+                        {
+                          "type": {
+                            "value": "SetAnimationName"
+                          },
+                          "parameters": [
+                            "item",
+                            "GlobalVariableString(currentItem)"
+                          ]
                         }
                       ]
+                    },
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [],
+                      "actions": []
+                    },
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "VarObjetTxt"
+                          },
+                          "parameters": [
+                            "item",
+                            "type",
+                            "=",
+                            "\"0\""
+                          ]
+                        }
+                      ],
+                      "actions": [],
+                      "events": [
+                        {
+                          "colorB": 228,
+                          "colorG": 176,
+                          "colorR": 74,
+                          "creationTime": 0,
+                          "name": "Pop up + Pick up",
+                          "source": "",
+                          "type": "BuiltinCommonInstructions::Group",
+                          "events": [
+                            {
+                              "type": "BuiltinCommonInstructions::Standard",
+                              "conditions": [
+                                {
+                                  "type": {
+                                    "value": "Distance"
+                                  },
+                                  "parameters": [
+                                    "item",
+                                    "bob",
+                                    "50",
+                                    ""
+                                  ]
+                                },
+                                {
+                                  "type": {
+                                    "value": "PickNearest"
+                                  },
+                                  "parameters": [
+                                    "item",
+                                    "bob.X()",
+                                    "bob.Y()",
+                                    ""
+                                  ]
+                                }
+                              ],
+                              "actions": [],
+                              "events": [
+                                {
+                                  "type": "BuiltinCommonInstructions::Standard",
+                                  "conditions": [
+                                    {
+                                      "type": {
+                                        "value": "ObjectVariableAsBoolean"
+                                      },
+                                      "parameters": [
+                                        "item",
+                                        "popped",
+                                        "False"
+                                      ]
+                                    }
+                                  ],
+                                  "actions": [
+                                    {
+                                      "type": {
+                                        "value": "SetObjectVariableAsBoolean"
+                                      },
+                                      "parameters": [
+                                        "item",
+                                        "popped",
+                                        "True"
+                                      ]
+                                    },
+                                    {
+                                      "type": {
+                                        "value": "Create"
+                                      },
+                                      "parameters": [
+                                        "",
+                                        "ePop",
+                                        "item.CenterX()",
+                                        "item.BoundingBoxTop()",
+                                        "\"\""
+                                      ]
+                                    },
+                                    {
+                                      "type": {
+                                        "value": "ChangeScale"
+                                      },
+                                      "parameters": [
+                                        "ePop",
+                                        "=",
+                                        "0"
+                                      ]
+                                    },
+                                    {
+                                      "type": {
+                                        "value": "Tween::AddObjectScaleTween"
+                                      },
+                                      "parameters": [
+                                        "ePop",
+                                        "Tween",
+                                        "\"pop\"",
+                                        "2",
+                                        "2",
+                                        "\"easeOutBack\"",
+                                        "250",
+                                        "",
+                                        ""
+                                      ]
+                                    },
+                                    {
+                                      "type": {
+                                        "value": "LinkedObjects::LinkObjects"
+                                      },
+                                      "parameters": [
+                                        "",
+                                        "item",
+                                        "ePop"
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "BuiltinCommonInstructions::Standard",
+                                  "conditions": [
+                                    {
+                                      "type": {
+                                        "value": "KeyPressed"
+                                      },
+                                      "parameters": [
+                                        "",
+                                        "e"
+                                      ]
+                                    },
+                                    {
+                                      "type": {
+                                        "value": "BuiltinCommonInstructions::Once"
+                                      },
+                                      "parameters": []
+                                    }
+                                  ],
+                                  "actions": [],
+                                  "events": [
+                                    {
+                                      "type": "BuiltinCommonInstructions::Standard",
+                                      "conditions": [
+                                        {
+                                          "type": {
+                                            "value": "LinkedObjects::PickObjectsLinkedTo"
+                                          },
+                                          "parameters": [
+                                            "",
+                                            "ePop",
+                                            "item",
+                                            ""
+                                          ]
+                                        }
+                                      ],
+                                      "actions": [
+                                        {
+                                          "type": {
+                                            "value": "Tween::AddObjectScaleTween"
+                                          },
+                                          "parameters": [
+                                            "ePop",
+                                            "Tween",
+                                            "\"pop\"",
+                                            "0",
+                                            "0",
+                                            "\"easeInBack\"",
+                                            "200",
+                                            "yes",
+                                            ""
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "BuiltinCommonInstructions::Standard",
+                                      "conditions": [],
+                                      "actions": [
+                                        {
+                                          "type": {
+                                            "value": "ModVarGlobalTxt"
+                                          },
+                                          "parameters": [
+                                            "currentItem",
+                                            "=",
+                                            "item.AnimationName()"
+                                          ]
+                                        },
+                                        {
+                                          "type": {
+                                            "value": "Delete"
+                                          },
+                                          "parameters": [
+                                            "item",
+                                            ""
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "BuiltinCommonInstructions::Standard",
+                              "conditions": [
+                                {
+                                  "type": {
+                                    "inverted": true,
+                                    "value": "Distance"
+                                  },
+                                  "parameters": [
+                                    "item",
+                                    "bob",
+                                    "50",
+                                    ""
+                                  ]
+                                },
+                                {
+                                  "type": {
+                                    "value": "ObjectVariableAsBoolean"
+                                  },
+                                  "parameters": [
+                                    "item",
+                                    "popped",
+                                    "True"
+                                  ]
+                                }
+                              ],
+                              "actions": [
+                                {
+                                  "type": {
+                                    "value": "SetObjectVariableAsBoolean"
+                                  },
+                                  "parameters": [
+                                    "item",
+                                    "popped",
+                                    "False"
+                                  ]
+                                }
+                              ],
+                              "events": [
+                                {
+                                  "type": "BuiltinCommonInstructions::Standard",
+                                  "conditions": [
+                                    {
+                                      "type": {
+                                        "value": "LinkedObjects::PickObjectsLinkedTo"
+                                      },
+                                      "parameters": [
+                                        "",
+                                        "ePop",
+                                        "item",
+                                        ""
+                                      ]
+                                    }
+                                  ],
+                                  "actions": [
+                                    {
+                                      "type": {
+                                        "value": "Tween::AddObjectScaleTween"
+                                      },
+                                      "parameters": [
+                                        "ePop",
+                                        "Tween",
+                                        "\"pop\"",
+                                        "0",
+                                        "0",
+                                        "\"easeInBack\"",
+                                        "200",
+                                        "yes",
+                                        ""
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "parameters": []
+                        }
+                      ]
+                    },
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [],
+                      "actions": []
                     }
                   ],
                   "parameters": []
