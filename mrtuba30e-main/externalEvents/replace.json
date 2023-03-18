@@ -1,0 +1,48 @@
+{
+  "associatedLayout": "ObjectRepository",
+  "lastChangeTimeStamp": 0,
+  "name": "replace",
+  "events": [
+    {
+      "type": "BuiltinCommonInstructions::Standard",
+      "conditions": [
+        {
+          "type": {
+            "value": "VarObjetTxt"
+          },
+          "parameters": [
+            "item",
+            "type",
+            "=",
+            "\"hand\""
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "type": {
+            "value": "RotateTowardAngle"
+          },
+          "parameters": [
+            "item",
+            "AngleBetweenPositions(bob.CenterX(), bob.CenterY(), MouseX(), MouseY())",
+            "720",
+            ""
+          ]
+        },
+        {
+          "type": {
+            "value": "SetCenter"
+          },
+          "parameters": [
+            "item",
+            "=",
+            "lerp(item.CenterX(), bob.CenterX() + XFromAngleAndDistance(AngleBetweenPositions(bob.CenterX(), bob.CenterY(), MouseX(), MouseY()), 50), 0.5)",
+            "=",
+            "lerp(item.CenterY(), bob.CenterY() + YFromAngleAndDistance(AngleBetweenPositions(bob.CenterX(), bob.CenterY(), MouseX(), MouseY()), 50), 0.5)"
+          ]
+        }
+      ]
+    }
+  ]
+}

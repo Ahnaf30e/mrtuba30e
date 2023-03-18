@@ -231,6 +231,17 @@
         }
       ],
       "effects": []
+    },
+    {
+      "ambientLightColorB": 7719488,
+      "ambientLightColorG": 6067680,
+      "ambientLightColorR": 11639464,
+      "followBaseLayerCamera": false,
+      "isLightingLayer": false,
+      "name": "GUI",
+      "visibility": true,
+      "cameras": [],
+      "effects": []
     }
   ],
   "behaviorsSharedData": [
