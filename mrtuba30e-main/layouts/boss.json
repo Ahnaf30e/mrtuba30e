@@ -89,7 +89,7 @@
       "customSize": false,
       "height": 0,
       "layer": "",
-      "name": "PlayerBox",
+      "name": "player",
       "persistentUuid": "2b36ef2e-5446-448f-a295-728fcdb3c901",
       "width": 0,
       "x": -32,
@@ -119,7 +119,7 @@
       "customSize": false,
       "height": 0,
       "layer": "",
-      "name": "Gun",
+      "name": "item",
       "persistentUuid": "89ae6e8e-49b1-4e77-af4a-3424170dd3a9",
       "width": 0,
       "x": -96,
@@ -219,7 +219,7 @@
             "value": "ActivateBehavior"
           },
           "parameters": [
-            "PlayerBox",
+            "player",
             "SmoothCamera",
             ""
           ]

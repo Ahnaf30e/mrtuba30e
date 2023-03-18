@@ -1,19 +1,100 @@
 {
-  "b": 209,
+  "b": 25,
   "disableInputWhenNotFocused": true,
   "mangledName": "Level1",
   "name": "Level1",
-  "r": 209,
+  "r": 23,
   "standardSortMethod": true,
   "stopSoundsOnStartup": true,
   "title": "",
-  "v": 209,
-  "uiSettings": {},
+  "v": 24,
+  "uiSettings": {
+    "grid": true,
+    "gridType": "rectangular",
+    "gridWidth": 32,
+    "gridHeight": 32,
+    "gridOffsetX": 0,
+    "gridOffsetY": 0,
+    "gridColor": 10401023,
+    "gridAlpha": 0.2,
+    "snap": true,
+    "zoomFactor": 1.1245287268599558,
+    "windowMask": false
+  },
   "objectsGroups": [],
   "variables": [],
-  "instances": [],
+  "instances": [
+    {
+      "angle": 0,
+      "customSize": true,
+      "height": 192,
+      "layer": "",
+      "name": "lift",
+      "persistentUuid": "7868b7fe-8da9-4383-a0af-49a03719179a",
+      "width": 128,
+      "x": 416,
+      "y": 192,
+      "zOrder": 2,
+      "numberProperties": [],
+      "stringProperties": [],
+      "initialVariables": []
+    },
+    {
+      "angle": 0,
+      "customSize": true,
+      "height": 32,
+      "layer": "",
+      "name": "player",
+      "persistentUuid": "f13a3f2d-2741-4068-8e7a-ea887d0fd49a",
+      "width": 32,
+      "x": 466,
+      "y": 320,
+      "zOrder": 3,
+      "numberProperties": [],
+      "stringProperties": [],
+      "initialVariables": []
+    },
+    {
+      "angle": 0,
+      "customSize": true,
+      "height": 64,
+      "layer": "",
+      "name": "bob",
+      "persistentUuid": "7541b31e-7260-4960-9071-95dcfcf749c6",
+      "width": 64,
+      "x": 608,
+      "y": 320,
+      "zOrder": 4,
+      "numberProperties": [],
+      "stringProperties": [],
+      "initialVariables": []
+    },
+    {
+      "angle": 0,
+      "customSize": true,
+      "height": 128,
+      "layer": "",
+      "name": "camZone",
+      "persistentUuid": "5309c369-361b-4097-bfe2-81f17a507279",
+      "width": 128,
+      "x": 416,
+      "y": 256,
+      "zOrder": 5,
+      "numberProperties": [],
+      "stringProperties": [],
+      "initialVariables": []
+    }
+  ],
   "objects": [],
-  "events": [],
+  "events": [
+    {
+      "type": "BuiltinCommonInstructions::Link",
+      "include": {
+        "includeConfig": 0
+      },
+      "target": "Main Code"
+    }
+  ],
   "layers": [
     {
       "ambientLightColorB": 0,
