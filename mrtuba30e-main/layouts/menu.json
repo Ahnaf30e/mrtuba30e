@@ -1,13 +1,13 @@
 {
-  "b": 209,
+  "b": 25,
   "disableInputWhenNotFocused": true,
   "mangledName": "Menu",
   "name": "Menu",
-  "r": 209,
+  "r": 23,
   "standardSortMethod": true,
   "stopSoundsOnStartup": true,
   "title": "",
-  "v": 209,
+  "v": 24,
   "uiSettings": {
     "grid": true,
     "gridType": "rectangular",
@@ -16,9 +16,9 @@
     "gridOffsetX": 0,
     "gridOffsetY": 0,
     "gridColor": 10401023,
-    "gridAlpha": 0.8,
+    "gridAlpha": 0.2,
     "snap": true,
-    "zoomFactor": 0.6403002668027643,
+    "zoomFactor": 0.7291666666666652,
     "windowMask": false
   },
   "objectsGroups": [],
@@ -125,6 +125,21 @@
       "x": 0,
       "y": 544,
       "zOrder": 6,
+      "numberProperties": [],
+      "stringProperties": [],
+      "initialVariables": []
+    },
+    {
+      "angle": 0,
+      "customSize": true,
+      "height": 384,
+      "layer": "",
+      "name": "liftButtonFlexBox",
+      "persistentUuid": "91f64926-46a9-4b56-9eaa-761b29e477be",
+      "width": 192,
+      "x": 416,
+      "y": -480,
+      "zOrder": 7,
       "numberProperties": [],
       "stringProperties": [],
       "initialVariables": []
@@ -415,6 +430,141 @@
         "g": 255,
         "r": 255
       }
+    },
+    {
+      "assetStoreId": "",
+      "name": "liftButton",
+      "tags": "",
+      "type": "Sprite",
+      "updateIfNotVisible": false,
+      "variables": [],
+      "effects": [],
+      "behaviors": [
+        {
+          "name": "FlexItem",
+          "type": "FlexBox::FlexItem",
+          "ContainerID": "Default",
+          "Growth": 0,
+          "Shrink": 0,
+          "Order": 0,
+          "AlignSelf": "auto",
+          "FullWidth": false,
+          "FullHeight": false
+        }
+      ],
+      "animations": [
+        {
+          "name": "",
+          "useMultipleDirections": false,
+          "directions": [
+            {
+              "looping": false,
+              "timeBetweenFrames": 0.08,
+              "sprites": [
+                {
+                  "hasCustomCollisionMask": false,
+                  "image": "assets\\buttonLevelselect.png",
+                  "points": [],
+                  "originPoint": {
+                    "name": "origine",
+                    "x": 0,
+                    "y": 0
+                  },
+                  "centerPoint": {
+                    "automatic": true,
+                    "name": "centre",
+                    "x": 0,
+                    "y": 0
+                  },
+                  "customCollisionMask": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "assetStoreId": "",
+      "name": "liftButtonFlexBox",
+      "tags": "",
+      "type": "Sprite",
+      "updateIfNotVisible": false,
+      "variables": [],
+      "effects": [],
+      "behaviors": [
+        {
+          "name": "FlexContainer",
+          "type": "FlexBox::FlexContainer",
+          "ID": "Default",
+          "Direction": "down",
+          "Wrap": "wrap",
+          "JustifyContent": "flex-start",
+          "AlignItems": "center",
+          "AlignContent": "center",
+          "Gap": 8
+        }
+      ],
+      "animations": [
+        {
+          "name": "flexBox",
+          "useMultipleDirections": false,
+          "directions": [
+            {
+              "looping": false,
+              "metadata": "{\"pskl\":{}}",
+              "timeBetweenFrames": 0.08,
+              "sprites": [
+                {
+                  "hasCustomCollisionMask": false,
+                  "image": "flexBox",
+                  "points": [],
+                  "originPoint": {
+                    "name": "origine",
+                    "x": 0,
+                    "y": 0
+                  },
+                  "centerPoint": {
+                    "automatic": true,
+                    "name": "centre",
+                    "x": 0,
+                    "y": 0
+                  },
+                  "customCollisionMask": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "assetStoreId": "",
+      "bold": false,
+      "italic": false,
+      "name": "buttonliftText",
+      "smoothed": true,
+      "tags": "",
+      "type": "TextObject::Text",
+      "underlined": false,
+      "variables": [],
+      "effects": [],
+      "behaviors": [
+        {
+          "name": "Sticker",
+          "type": "Sticker::Sticker",
+          "OnlyFollowPosition": true
+        }
+      ],
+      "string": "0",
+      "font": "Minecraft.ttf",
+      "textAlignment": "center",
+      "characterSize": 32,
+      "color": {
+        "b": 222,
+        "g": 240,
+        "r": 239
+      }
     }
   ],
   "events": [
@@ -525,6 +675,227 @@
           ]
         }
       ]
+    },
+    {
+      "type": "BuiltinCommonInstructions::Standard",
+      "conditions": [
+        {
+          "type": {
+            "value": "DepartScene"
+          },
+          "parameters": [
+            ""
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "type": {
+            "value": "ModVarScene"
+          },
+          "parameters": [
+            "buttonIndex",
+            "=",
+            "0"
+          ]
+        },
+        {
+          "type": {
+            "value": "Cache"
+          },
+          "parameters": [
+            "liftButtonFlexBox"
+          ]
+        }
+      ],
+      "events": [
+        {
+          "infiniteLoopWarning": true,
+          "type": "BuiltinCommonInstructions::While",
+          "whileConditions": [
+            {
+              "type": {
+                "value": "VarScene"
+              },
+              "parameters": [
+                "buttonIndex",
+                "<",
+                "8"
+              ]
+            }
+          ],
+          "conditions": [],
+          "actions": [],
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [],
+              "actions": [
+                {
+                  "type": {
+                    "value": "Create"
+                  },
+                  "parameters": [
+                    "",
+                    "liftButton",
+                    "0",
+                    "0",
+                    "\"\""
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "FlexBox::FlexItem::SetOrder"
+                  },
+                  "parameters": [
+                    "liftButton",
+                    "FlexItem",
+                    "Variable(buttonIndex)",
+                    ""
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "ChangeScale"
+                  },
+                  "parameters": [
+                    "liftButton",
+                    "=",
+                    "3"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "Create"
+                  },
+                  "parameters": [
+                    "",
+                    "buttonliftText",
+                    "0",
+                    "0",
+                    "\"\""
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "TextObject::String"
+                  },
+                  "parameters": [
+                    "buttonliftText",
+                    "=",
+                    "ToString(Variable(buttonIndex)+1)"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "SetCenter"
+                  },
+                  "parameters": [
+                    "buttonliftText",
+                    "=",
+                    "liftButton.CenterX()",
+                    "=",
+                    "liftButton.CenterY()"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "Sticker::Sticker::Stick"
+                  },
+                  "parameters": [
+                    "buttonliftText",
+                    "Sticker",
+                    "liftButton",
+                    ""
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "LinkedObjects::LinkObjects"
+                  },
+                  "parameters": [
+                    "",
+                    "liftButton",
+                    "buttonliftText"
+                  ]
+                }
+              ],
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "ModVarScene"
+                      },
+                      "parameters": [
+                        "buttonIndex",
+                        "+",
+                        "1"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "BuiltinCommonInstructions::Standard",
+      "conditions": [
+        {
+          "type": {
+            "value": "MouseButtonFromTextPressed"
+          },
+          "parameters": [
+            "",
+            "\"Left\""
+          ]
+        },
+        {
+          "type": {
+            "value": "BuiltinCommonInstructions::Once"
+          },
+          "parameters": []
+        },
+        {
+          "type": {
+            "value": "SourisSurObjet"
+          },
+          "parameters": [
+            "liftButton",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "type": {
+            "value": "LinkedObjects::PickObjectsLinkedTo"
+          },
+          "parameters": [
+            "",
+            "buttonliftText",
+            "liftButton",
+            ""
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "type": {
+            "value": "Scene"
+          },
+          "parameters": [
+            "",
+            "\"Level\" + buttonliftText.String()",
+            ""
+          ]
+        }
+      ]
     }
   ],
   "layers": [
@@ -568,12 +939,24 @@
       "type": "FlashTransitionPainter::FlashTransitionPainter"
     },
     {
+      "name": "FlexContainer",
+      "type": "FlexBox::FlexContainer"
+    },
+    {
+      "name": "FlexItem",
+      "type": "FlexBox::FlexItem"
+    },
+    {
       "name": "RemapForTopdown",
       "type": "BehaviorRemapper::RemapForTopdown"
     },
     {
       "name": "SmoothCamera",
       "type": "SmoothCamera::SmoothCamera"
+    },
+    {
+      "name": "Sticker",
+      "type": "Sticker::Sticker"
     },
     {
       "name": "TopDownMovement",
